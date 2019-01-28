@@ -50,7 +50,7 @@ app.get(
     FROM public.hourly_events
     GROUP BY date
     ORDER BY date
-    LIMIT 7;
+    LIMIT 365;
   `;
     return next();
   },

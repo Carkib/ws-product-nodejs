@@ -8,10 +8,27 @@ class EventsFetcher extends React.Component {
   };
 
   componentDidMount() {
-    this.fetchEvents(1);
+    if (this.props.hourly) {
+      this.fetchEventHourly(1);
+    }
+    if (this.props.daily) {
+      this.fetchEventDaily();
+    }
   }
 
-  fetchEvents = pageNumber => {
+  fetchEventDaily = () => {
+    fetch(`http://localhost:5555/events/daily`)
+      .then(response => response.json())
+      .then(data =>
+        this.setState({
+          events: data,
+          isLoading: false
+        })
+      )
+      .catch(error => this.setState({ error, isLoading: false }));
+  };
+
+  fetchEventHourly = pageNumber => {
     fetch(`http://localhost:5555/events/hourly?page=${pageNumber}`)
       .then(response => response.json())
       .then(data =>
@@ -25,13 +42,12 @@ class EventsFetcher extends React.Component {
   };
 
   changePage = pageNumber => {
-    this.fetchEvents(pageNumber);
+    this.fetchEventHourly(pageNumber);
   };
 
   render() {
     const { loading, events } = this.state;
     const { children } = this.props;
-    console.log("events", events);
 
     const childrenWithProps = React.Children.map(children, child =>
       React.cloneElement(child, {

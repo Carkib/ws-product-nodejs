@@ -9,7 +9,7 @@ export const makeRowData = event => ({
 
 export const renderRow = row => (
   <Table.Row key={`${row.date}`}>
-    <Table.Cell>{format(row.date, "MM/DD/YYYY")}</Table.Cell>
+    <Table.Cell>{format(row.date, "YYYY-MM-DD")}</Table.Cell>
     <Table.Cell>{format(row.date, "h a")}</Table.Cell>
     <Table.Cell>{row.number}</Table.Cell>
   </Table.Row>
@@ -17,6 +17,7 @@ export const renderRow = row => (
 
 export const renderPageNumber = (changePage, currentPage) => pageNumber => (
   <Menu.Item
+    key={pageNumber}
     as="a"
     onClick={() => changePage(pageNumber)}
     active={currentPage === pageNumber}
@@ -28,7 +29,7 @@ export const renderPageNumber = (changePage, currentPage) => pageNumber => (
 export const renderHeader = columns => (
   <Table.Row>
     {columns.map(columnName => (
-      <Table.HeaderCell>{columnName}</Table.HeaderCell>
+      <Table.HeaderCell key={columnName}>{columnName}</Table.HeaderCell>
     ))}
   </Table.Row>
 );
