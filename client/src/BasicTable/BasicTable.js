@@ -1,44 +1,28 @@
 import React from "react";
-import { Icon, Menu, Table } from "semantic-ui-react";
-import { range } from "lodash";
-import {
-  makeRowData,
-  renderRow,
-  renderPageNumber,
-  renderHeader
-} from "./BasicTableUtils";
+import { Table, Pagination } from "semantic-ui-react";
+import { makeRowData, renderRow, renderHeader } from "./BasicTableUtils";
 
-const BasicTable = ({ events, changePage, currentPage }) => (
-  <Table celled striped>
+const BasicTable = ({ events, changePage, paginated, highlightedText }) => (
+  <Table celled striped compact>
     <Table.Header>{renderHeader(["Date", "Hours", "Events"])}</Table.Header>
+    <Table.Body>
+      {events.map(makeRowData).map(renderRow(highlightedText))}
+    </Table.Body>
 
-    <Table.Body>{events.map(makeRowData).map(renderRow)}</Table.Body>
-
-    <Table.Footer>
-      <Table.Row>
-        <Table.HeaderCell colSpan="3">
-          <Menu floated="right" pagination>
-            <Menu.Item
-              as="a"
-              icon
-              disabled={currentPage === 1}
-              onClick={() => changePage(currentPage - 1)}
-            >
-              <Icon name="chevron left" />
-            </Menu.Item>
-            {range(1, 16).map(renderPageNumber(changePage, currentPage))}
-            <Menu.Item
-              as="a"
-              icon
-              onClick={() => changePage(currentPage + 1)}
-              disabled={currentPage === 15}
-            >
-              <Icon name="chevron right" />
-            </Menu.Item>
-          </Menu>
-        </Table.HeaderCell>
-      </Table.Row>
-    </Table.Footer>
+    {paginated && (
+      <Table.Footer>
+        <Table.Row>
+          <Table.HeaderCell colSpan="3">
+            <Pagination
+              floated="right"
+              defaultActivePage={1}
+              totalPages={38}
+              onPageChange={(evt, value) => changePage(value.activePage)}
+            />
+          </Table.HeaderCell>
+        </Table.Row>
+      </Table.Footer>
+    )}
   </Table>
 );
 

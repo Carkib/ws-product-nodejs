@@ -28,7 +28,7 @@ app.get(
   "/events/hourly",
   (req, res, next) => {
     const pageNumber = parseInt(req.query.page);
-    const pageSize = 50;
+    const pageSize = 20;
 
     req.sqlQuery = `
     SELECT date, hour, events
@@ -95,6 +95,27 @@ app.get(
     req.sqlQuery = `
     SELECT *
     FROM public.poi;
+  `;
+    return next();
+  },
+  queryHandler
+);
+
+app.get(
+  "/fuzzy",
+  (req, res, next) => {
+    const searchTerm = req.query.search;
+    req.sqlQuery = `
+    SELECT date, hour, events
+    FROM public.hourly_events
+    WHERE TO_CHAR(
+      date,
+      'YYYY-MM-DD') LIKE '%${searchTerm}%'
+      OR
+      hour::text LIKE '%${searchTerm}%'
+      OR
+      events::text LIKE '%${searchTerm}%'
+      LIMIT ${50}
   `;
     return next();
   },

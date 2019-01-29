@@ -1,29 +1,25 @@
 import React from "react";
 import { format, parse } from "date-fns";
-import { Menu, Table } from "semantic-ui-react";
+import { Table } from "semantic-ui-react";
+import Highlight from "./Highlight";
 
 export const makeRowData = event => ({
   date: parse(event.date).setHours(event.hour),
-  number: event.events
+  number: event.events.toString()
 });
 
-export const renderRow = row => (
+export const renderRow = match => row => (
   <Table.Row key={`${row.date}`}>
-    <Table.Cell>{format(row.date, "YYYY-MM-DD")}</Table.Cell>
-    <Table.Cell>{format(row.date, "h a")}</Table.Cell>
-    <Table.Cell>{row.number}</Table.Cell>
+    <Table.Cell>
+      <Highlight match={match}>{format(row.date, "YYYY-MM-DD")}</Highlight>
+    </Table.Cell>
+    <Table.Cell>
+      <Highlight match={match}>{format(row.date, "H")}</Highlight>
+    </Table.Cell>
+    <Table.Cell>
+      <Highlight match={match}>{row.number}</Highlight>
+    </Table.Cell>
   </Table.Row>
-);
-
-export const renderPageNumber = (changePage, currentPage) => pageNumber => (
-  <Menu.Item
-    key={pageNumber}
-    as="a"
-    onClick={() => changePage(pageNumber)}
-    active={currentPage === pageNumber}
-  >
-    {pageNumber}
-  </Menu.Item>
 );
 
 export const renderHeader = columns => (
