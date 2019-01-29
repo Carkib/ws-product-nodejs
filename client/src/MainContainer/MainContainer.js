@@ -7,10 +7,12 @@ import { CalendarView } from "../CalendarView/CalendarView";
 import FuzzySearch from "../BasicTable/FuzzySearch/FuzzySearch";
 import { ProgressStep } from "./ProgressStep/ProgressStep";
 import { COMMIT, BORING, FUZZY, GEO } from "./MainContainerUtils";
+import PoisFetcher from "../Fetchers/PoisFetcher";
+import SimpleMap from "../SimpleMap/SimpleMap";
 
 class MainContainer extends React.Component {
   state = {
-    activeTab: "commit"
+    activeTab: BORING
   };
 
   switchTab = tabName => () => {
@@ -23,14 +25,6 @@ class MainContainer extends React.Component {
       <Container>
         <Step.Group>
           <ProgressStep
-            active={activeTab === COMMIT}
-            onClick={this.switchTab(COMMIT)}
-            icon={"github"}
-            title="Daily HeatMap"
-            description="Are those events commits?"
-            popupText="If so that guy is a beast"
-          />
-          <ProgressStep
             active={activeTab === BORING}
             onClick={this.switchTab(BORING)}
             icon={"table"}
@@ -38,21 +32,32 @@ class MainContainer extends React.Component {
             description="Semantic UI is very nice though"
             popupText="And checkout that pagination"
           />
+
+          <ProgressStep
+            active={activeTab === COMMIT}
+            onClick={this.switchTab(COMMIT)}
+            icon={"github"}
+            title="Daily HeatMap"
+            description="Are those commits? Probably not.."
+            popupText="but if so that guy is a beast"
+          />
+
           <ProgressStep
             active={activeTab === FUZZY}
             onClick={this.switchTab(FUZZY)}
             icon={"search"}
-            title="Same Table, searchable"
-            description="I wish that was all client-side"
-            popupText="But no.. had to handle 'beyond the sample scale'"
+            title="Same Table But Searchable"
+            description="I wish that search was client-side"
+            popupText="I could have used that sweet premade semantic-ui one."
           />
 
           <ProgressStep
             active={activeTab === GEO}
             onClick={this.switchTab(GEO)}
             icon={"map"}
-            title="Some map"
-            description="some description"
+            title="Specific Map"
+            description="Show it to your friends!"
+            popupText="Let's say close family.. Let's keep it free shall we?"
           />
         </Step.Group>
         <Divider />
@@ -72,9 +77,9 @@ class MainContainer extends React.Component {
           </EventsFetcher>
         )}
         {activeTab === GEO && (
-          <EventsFetcher hourly>
-            <FuzzySearch events={[]} />
-          </EventsFetcher>
+          <PoisFetcher>
+            <SimpleMap />
+          </PoisFetcher>
         )}
       </Container>
     );

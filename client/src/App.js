@@ -6,6 +6,8 @@ import { Header, Container, Divider } from "semantic-ui-react";
 
 class App extends Component {
   render() {
+    require("dotenv").config();
+
     return (
       <div className="App">
         <Divider />
