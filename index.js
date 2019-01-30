@@ -74,15 +74,18 @@ app.get(
 app.get(
   "/stats/daily",
   (req, res, next) => {
+    const date = req.query.date;
+
     req.sqlQuery = `
-    SELECT date,
+    SELECT date,poi_id, -
         SUM(impressions) AS impressions,
         SUM(clicks) AS clicks,
         SUM(revenue) AS revenue
     FROM public.hourly_stats
-    GROUP BY date
-    ORDER BY date
-    LIMIT 7;
+    WHERE TO_CHAR(
+      date,
+      'YYYY-MM-DD') LIKE '%${date}%'
+    GROUP BY date, poi_id;
   `;
     return next();
   },

@@ -5,6 +5,7 @@ export const makeGeoJsonPointFromPoi = poi => ({
     coordinates: [poi.lon, poi.lat]
   },
   properties: {
-    name: poi.name
+    name: poi.name,
+    poiId: poi.poi_id
   }
 });

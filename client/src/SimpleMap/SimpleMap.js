@@ -3,29 +3,16 @@ import GoogleMapReact from "google-map-react";
 import { Header, Icon } from "semantic-ui-react";
 import { groupIntoCluster } from "./SimpleMapUtils";
 
-const someColors = [
-  "red",
-  "orange",
-  "yellow",
-  "olive",
-  "green",
-  "teal",
-  "blue",
-  "violet",
-  "purple",
-  "pink"
-];
-
-const SemanticUIMarker = ({ name, index }) => (
+const SemanticUIMarker = ({ name, color }) => (
   <Header as="h3">
-    <Icon color={someColors[index % 9]} name="map marker alternate" />
+    <Icon color={color} name="map marker alternate" />
     {name}
   </Header>
 );
 
 const SemanticUICluster = ({ amount, index }) => (
   <Header as="h3">
-    <Icon color={someColors[index % 9]} name="dot circle outline" />
+    <Icon color="red" name="dot circle outline" />
     {amount}
   </Header>
 );
@@ -43,35 +30,36 @@ class SimpleMap extends Component {
 
   render() {
     return (
-      <div style={{ height: "100vh", width: "100%" }}>
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY }}
-          defaultCenter={{ lng: -79.3899, lat: 43.6708 }}
-          defaultZoom={1}
-          onChange={this.handleChange}
-        >
-          {groupIntoCluster(this.props.geoJsonPoints, this.state.zoom).map(
-            (point, index) =>
-              point.properties.cluster ? (
-                <SemanticUICluster
-                  key={index}
-                  lng={point.geometry.coordinates[0]}
-                  lat={point.geometry.coordinates[1]}
-                  amount={point.properties.point_count}
-                  index={index}
-                />
-              ) : (
-                <SemanticUIMarker
-                  key={index}
-                  lng={point.geometry.coordinates[0]}
-                  lat={point.geometry.coordinates[1]}
-                  name={point.properties.name}
-                  index={index}
-                />
-              )
-          )}
-        </GoogleMapReact>
-      </div>
+      <>
+        <div style={{ height: "100vh", width: "100%" }}>
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY }}
+            defaultCenter={{ lng: -79.3899, lat: 43.6708 }}
+            defaultZoom={1}
+            onChange={this.handleChange}
+          >
+            {groupIntoCluster(this.props.geoJsonPoints, this.state.zoom).map(
+              (point, index) =>
+                point.properties.cluster ? (
+                  <SemanticUICluster
+                    key={index}
+                    lng={point.geometry.coordinates[0]}
+                    lat={point.geometry.coordinates[1]}
+                    amount={point.properties.point_count}
+                  />
+                ) : (
+                  <SemanticUIMarker
+                    key={index}
+                    lng={point.geometry.coordinates[0]}
+                    lat={point.geometry.coordinates[1]}
+                    name={point.properties.name}
+                    color={point.color}
+                  />
+                )
+            )}
+          </GoogleMapReact>
+        </div>
+      </>
     );
   }
 }

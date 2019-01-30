@@ -8,7 +8,7 @@ import FuzzySearch from "../BasicTable/FuzzySearch/FuzzySearch";
 import { ProgressStep } from "./ProgressStep/ProgressStep";
 import { COMMIT, BORING, FUZZY, GEO } from "./MainContainerUtils";
 import PoisFetcher from "../Fetchers/PoisFetcher";
-import SimpleMap from "../SimpleMap/SimpleMap";
+import DateDataFetcher from "../Fetchers/DateDataFetcher";
 
 class MainContainer extends React.Component {
   state = {
@@ -78,7 +78,7 @@ class MainContainer extends React.Component {
         )}
         {activeTab === GEO && (
           <PoisFetcher>
-            <SimpleMap />
+            <DateDataFetcher />
           </PoisFetcher>
         )}
       </Container>
