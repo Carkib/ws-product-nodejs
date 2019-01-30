@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node -r dotenv/config index.js",
     "client": "cd client && npm start",
-    "dev": "nodemon -r dotenv/config --ignore 'node_modules' --ignore 'client' index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon -r dotenv/config --ignore 'node_modules' --ignore 'client' index.js"
   },
   "repository": {
     "type": "git",
